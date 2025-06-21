@@ -4,11 +4,15 @@ import { SelectInput, TextInput } from "@/components/common/input";
 import { PAGE_ROUTES } from "@/constants/routes";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import AuthHeader from "../../_components/AuthHeader";
 import axiosInstance from "@/lib/axiosInstance";
+import TermsAndConditions from "@/components/common/t&c";
+
+const formatDateToDDMMYYYY = (d: string) =>
+  d ? d.split("-").reverse().join("-") : "";
 
 type SignUpForm = {
   email: string;
@@ -24,9 +28,8 @@ type SignUpForm = {
 };
 
 const SignupModule = () => {
-    const router = useRouter();
-    const [country_id, setCountry_id] = React.useState<number>(0);
-    const [country, setCountry] = React.useState<{
+  const router = useRouter();
+  const [country, setCountry] = React.useState<{
     flag: string;
     dialing_code: string;
   }>({
@@ -58,8 +61,14 @@ const SignupModule = () => {
   const stateId = watch("state_id");
 
   const mutation = useMutation({
-    mutationFn: (data: SignUpForm) => axiosInstance.post("/account/create", data),
-    onSuccess: () => {
+    mutationFn: (data: SignUpForm) =>
+      axiosInstance.post("/account/create", {
+        ...data,
+        date_of_birth: formatDateToDDMMYYYY(data.date_of_birth),
+      }),
+
+    onSuccess: (data) => {
+      console.log("Signup successful:", data);
       toast.success("Signup successful");
       router.push(PAGE_ROUTES.DASHBOARD.href);
     },
@@ -70,7 +79,7 @@ const SignupModule = () => {
 
   const onSubmit = (data: SignUpForm) => {
     console.log("Form Data:", data);
-    // mutation.mutate(data);
+    mutation.mutate(data);
   };
 
   const { data: countries } = useQuery({
@@ -96,6 +105,31 @@ const SignupModule = () => {
         .then((res) => res?.data?.data),
     enabled: !!stateId,
   });
+
+  useEffect(() => {
+    if (countries && countries.length > 0) {
+      const defaultCountry = countries.find(
+        (country: any) => country?.id == 211
+      );
+      setCountry({
+        flag: defaultCountry.flag,
+        dialing_code: defaultCountry.dialing_code,
+      });
+      watch("country_id", defaultCountry.id);
+    }
+
+    if (countryId > 0) {
+      const selectedCountry = countries?.find(
+        (country: any) => country.id === countryId
+      );
+      if (selectedCountry) {
+        setCountry({
+          flag: selectedCountry.flag,
+          dialing_code: selectedCountry.dialing_code,
+        });
+      }
+    }
+  }, [countries, countryId]);
 
   return (
     <div className="flex items-center justify-center">
@@ -154,7 +188,6 @@ const SignupModule = () => {
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
               const selectedId = Number(e.target.value);
 
-              console.log("Selected Country ID:", selectedId);
               const selectedCountry = countries?.find(
                 (country: any) => country.id === selectedId
               );
@@ -226,8 +259,14 @@ const SignupModule = () => {
             type="date"
             placeholder="YYYY-MM-DD"
             error={errors.date_of_birth}
-            validation={{ required: "Date of birth is required" }}
+            validation={{
+              required: "Date of birth is required",
+              validate: (v: string) =>
+                new Date().getFullYear() - new Date(v).getFullYear() >= 18 ||
+                "You must be at least 18 years old",
+            }}
           />
+
           <TextInput
             label="Password"
             name="password"
@@ -237,6 +276,7 @@ const SignupModule = () => {
             error={errors.password}
             validation={{ required: "Password is required" }}
           />
+          <TermsAndConditions />
           <Button text="Sign Up" loading={mutation.isPending} />
         </form>
       </div>
