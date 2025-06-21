@@ -7,11 +7,11 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
-import axios from "axios";
 import toast from "react-hot-toast";
 import useIsBrower from "../hooks/useIsBrower";
 import { setToken } from "@/service/setToken";
 import { API_ROUTES } from "@/constants/routes";
+import axiosInstance from "@/lib/axiosInstance";
 
 interface LoginResponse {
   status: number;
@@ -126,7 +126,7 @@ export const login = async (
 ) => {
   dispatch({ type: "SET_LOGIN_SUBMITTING", payload: true });
   try {
-    const response = await axios.post(`${url}${API_ROUTES.AUTH.LOGIN}`, data);
+    const response = await axiosInstance.post(`${url}${API_ROUTES.AUTH.LOGIN}`, data);
     if (response?.data?.resp_code == "00") {
       const { token, user }: LoginResponse = response.data?.data;
       dispatch({ type: "LOGIN", payload: token });

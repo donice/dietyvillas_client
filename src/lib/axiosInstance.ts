@@ -2,12 +2,13 @@ import axios from 'axios';
 
 const base_url = process.env.NEXT_PUBLIC_BASE_URL;
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL + '/api/core',
 });
 
 axiosInstance.interceptors.request.use(
   (config) => {
     config.headers['Authorization'] = axios.defaults.headers.common['Authorization'];
+    config.headers['lang'] = 'eng';
     return config;
   },
   (error) => {
@@ -17,8 +18,6 @@ axiosInstance.interceptors.request.use(
 
 
 export default axiosInstance;
-
-
 
 
 interface FetchOptions extends RequestInit {
