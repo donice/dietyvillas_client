@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import { HeaderSkeleton } from "./skeleton/ListingSkeleton";
+import Image from "next/image";
 
 interface ListingProps {
   data: any;
@@ -33,7 +34,7 @@ const Listing = ({ data, loading }: ListingProps) => {
   const listings = data?.data?.data || [];
 
   return (
-    <section className="mx-auto max-w-7xl py-6">
+    <section className="py-6">
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 h-full">
         {listings.map((property: any, index: number) => {
           const isFirstInRow = index % columns === 0;
@@ -42,21 +43,18 @@ const Listing = ({ data, loading }: ListingProps) => {
           return (
             <Link
               key={property.id}
-              href={property.url}
-              target="_blank"
+              href={"/properties/" + property.id}
               rel="noopener noreferrer"
               className={`flex flex-col overflow-hidden transition ${
                 isFirstInRow ? "rounded-l-2xl" : ""
               } ${isLastInRow ? "rounded-r-2xl" : ""}`}
             >
-              <img
+              <Image
                 src={property.property_images[0]?.image_link}
                 alt={property.title}
+                width={100}
+                height={100}
                 className="w-full h-48 object-cover bg-gray-100"
-                style={{
-                  minHeight: "190px",
-                  objectFit: "cover",
-                }}
               />
 
               <div className="flex flex-col justify-between my-4 flex-1">
