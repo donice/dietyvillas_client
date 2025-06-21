@@ -60,7 +60,7 @@ export const TextInput = <T extends Record<string, unknown>>({
           disabled={disabled}
           placeholder={placeholder}
             {...register((name as Path<T>), { required, ...validation })}
-          className={`w-full px-3 py-3 border bg-gray-200 font-bold rounded-md focus:ring focus:ring-gray-300 focus:outline-none ${
+          className={`w-full px-3 py-3 border bg-gray-100 font-bold rounded-md focus:ring focus:ring-gray-300 focus:outline-none ${
             error ? "border-1.5 border-red-500" : "border-gray-100"
           } ${className}`}
           {...props}
@@ -134,7 +134,7 @@ export const SelectInput = <T extends Record<string, any>>({
         id={name}
         disabled={disabled}
         {...register(name, { required, ...validation })}
-        className={`w-full px-3 py-3 border bg-gray-200 font-bold rounded-md focus:ring focus:ring-gray-300 focus:outline-none ${
+        className={`w-full px-3 py-3 border bg-gray-100 font-bold rounded-md focus:ring focus:ring-gray-300 focus:outline-none ${
           error ? "border-1.5 border-red-500" : "border-gray-100"
         } ${className}`}
         {...props}

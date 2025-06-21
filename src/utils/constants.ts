@@ -1,9 +1,9 @@
 export const appConfig = {
-  name: 'Letcomange TMS',
+  name: 'Deity Villas ',
   description: 'A comprehensive ticket management system for event handling and organization',
   version: '1.0.0',
   author: {
-    name: 'Letcomange',
+    name: 'Deity Villas',
     email: 'contact@letcomange.com',
     website: 'https://letcomange.com'
   },

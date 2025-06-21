@@ -1,6 +1,7 @@
 import { appConfig } from "@/utils/constants";
 import { Metadata } from "next";
 import React from "react";
+import HomeNav from "./(home)/_components/HomeNav";
 
 export const metadata: Metadata = {
   title: appConfig.name,
@@ -12,7 +13,12 @@ const MainLayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  return <div>{children}</div>;
+  return (
+    <div>
+      <HomeNav />
+      {children}
+    </div>
+  );
 };
 
 export default MainLayout;

@@ -24,7 +24,7 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   const baseStyles =
     "flex items-center justify-center gap-2 px-3 py-3 rounded-lg text-white font-medium transition-all ease-in-out";
-  const enabledStyles = "bg-primary hover:bg-primary hover:rounded-lg";
+  const enabledStyles = "bg-amber-400 hover:bg-amber-400 hover:rounded-lg";
   const disabledStyles = "bg-gray-400 cursor-not-allowed";
   const loadingSpinner = (
    <LoaderIcon />

@@ -20,22 +20,21 @@ const HomePageModule = () => {
   const { data: properties, isLoading: propertiesIsLoading } = useQuery({
     queryKey: ["properties", activeCategory],
     queryFn: async () => {
-      // const response = await axiosInstance.get(
-      //   `/properties${activeCategory ? "/category" : ""}`,
-      //   {
-      //     params: {
-      //       property_categories_id: activeCategory,
-      //     },
-      //   }
-      // );
-      const response = await axiosInstance.get(`/properties`);
+      const response = await axiosInstance.get(
+        `/properties${activeCategory ? "/category" : ""}`,
+        {
+          params: {
+            property_categories_id: activeCategory,
+          },
+        }
+      );
+      // const response = await axiosInstance.get(`/properties`);
       return response.data;
     },
   });
 
   return (
-    <div className="p-4 mx-auto max-w-7xl">
-      <HomeNav data={[]} loading={false} />
+    <div className="px-4 py-24 mx-auto max-w-7xl">
       <Header
         data={categories}
         loading={categoriesIsLoading}
