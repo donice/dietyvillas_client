@@ -27,13 +27,18 @@ const HomeNav = ({ data, loading, onItemChange }: HomeNavProps) => {
     }
   }, [data]);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center p-4">
-        <p>Loading...</p>
-      </div>
-    );
-  }
+  const SkeletonLoader = () => (
+    <div className="flex items-center justify-center overflow-x-auto p-2 space-x-3">
+      {Array.from({ length: 4 }).map((_, index) => (
+        <div
+          key={index}
+          className="px-6 py-2 rounded-full bg-gray-300 dark:bg-gray-700 animate-pulse w-24 h-8"
+        ></div>
+      ))}
+    </div>
+  );
+
+  if (loading) return <SkeletonLoader />;
 
   if (data?.resp_code !== "00") {
     return (

@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     config.headers['Authorization'] = axios.defaults.headers.common['Authorization'];
-    config.headers['lang'] = 'eng';
+    config.headers['lang'] = 'en';
     return config;
   },
   (error) => {
