@@ -39,7 +39,7 @@ const HomeNav = () => {
             href={"/signup"}
             className="px-6 py-2 rounded-full text-white bg-amber-400 font-semibold border border-amber-400 hover:bg-amber-600 transition"
           >
-            Signup
+            Sign Up
           </Link>
         </div>
 
@@ -84,7 +84,7 @@ const HomeNav = () => {
             onClick={closeMenu}
             className="px-4 py-2 rounded-full text-white bg-amber-400 font-semibold border border-amber-400 hover:bg-amber-600 transition"
           >
-            Signup
+            Sign Up
           </Link>
         </div>
       </dialog>

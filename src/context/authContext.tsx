@@ -15,7 +15,9 @@ import axiosInstance from "@/lib/axiosInstance";
 
 interface LoginResponse {
   status: number;
-  token: string;
+  token_data: {
+    token: string;
+  };
   user: {
     id: number;
     firstname: string;
@@ -130,13 +132,15 @@ export const login = async (
       ...data,
       is_social: false,
     });
-    if (response?.data?.resp_code == "00") {
-      const { token, user }: LoginResponse = response.data?.data;
-      dispatch({ type: "LOGIN", payload: token });
 
-      setToken(token);
+    console.log("Login response:", response.data?.data);
+    if (response?.data?.resp_code == "00") {
+      const { token_data, user }: LoginResponse = response.data?.data;
+      dispatch({ type: "LOGIN", payload: token_data?.token });
+
+      setToken(token_data?.token);
       toast.success(response?.data?.resp_description);
-      useIsBrower() && sessionStorage.setItem("TOKEN", token);
+      useIsBrower() && sessionStorage.setItem("TOKEN", token_data?.token);
       useIsBrower() &&
         sessionStorage.setItem("USER_DATA", JSON.stringify(user));
     } else {

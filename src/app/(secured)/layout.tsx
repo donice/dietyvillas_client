@@ -1,4 +1,3 @@
-import SideNav from "@/components/nav/SideNav";
 import TopNav from "@/components/nav/TopNav";
 import AuthGuard from "@/constants/AuthGuard";
 import { appConfig } from "@/utils/constants";
@@ -19,7 +18,6 @@ const MainLayout = ({
     <AuthGuard>
       <TopNav />
       <div>
-        <SideNav />
         <section className="md:ml-64 mt-16 p-4 md:p-10 max-w-7xl">{children}</section>
       </div>
     </AuthGuard>

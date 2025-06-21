@@ -36,9 +36,9 @@ const SigninModule = () => {
   const mutation = useMutation({
     mutationFn: (data: { options: string; password: string }) =>
       login(dispatch, data),
-    onSuccess: (data) => {
+    onSuccess: () => {
       // toast.success("Login successful");
-      // router.push(PAGE_ROUTES.DASHBOARD.href);
+      router.push(PAGE_ROUTES.DASHBOARD.href);
     },
     onError: (error: any) => {
       toast.error("Error Loging in");
