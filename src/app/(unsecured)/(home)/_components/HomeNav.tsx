@@ -55,7 +55,7 @@ const HomeNav = () => {
       {/* Mobile Menu */}
       <dialog
         ref={dialogRef}
-        className="fixed top-0 right-0 z-50 w-screen h-screen p-0 bg-white border-none open:animate-slide-in"
+        className="fixed top-0 right-0 z-50 w-screen p-0 bg-white border-none open:animate-slide-in"
       >
         <div className="flex justify-between items-center px-4 py-2.5 border-b border-gray-200">
           <Image src={Logo} alt="Deity Villas Logo" className="h-8 w-auto" />

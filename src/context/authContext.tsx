@@ -122,11 +122,14 @@ export const useAuthDispatch = (): Dispatch<AuthAction> => {
 
 export const login = async (
   dispatch: Dispatch<AuthAction>,
-  data: { email: string; password: string }
+  data: { options: string; password: string }
 ) => {
   dispatch({ type: "SET_LOGIN_SUBMITTING", payload: true });
   try {
-    const response = await axiosInstance.post(`${url}${API_ROUTES.AUTH.LOGIN}`, data);
+    const response = await axiosInstance.post(`${API_ROUTES.AUTH.LOGIN}`, {
+      ...data,
+      is_social: false,
+    });
     if (response?.data?.resp_code == "00") {
       const { token, user }: LoginResponse = response.data?.data;
       dispatch({ type: "LOGIN", payload: token });
@@ -142,14 +145,16 @@ export const login = async (
         type: "SET_LOGIN_ERRORS",
         payload: response?.data?.resp_description,
       });
-      toast.error(response?.data?.resp_description);
+      toast.error(response?.data?.resp_description || "Login failed");
     }
+     console.log("Login djn. response:");
   } catch (error: any) {
     dispatch({
       type: "SET_LOGIN_ERRORS",
       payload: "Invalid login credentials",
     });
-    toast.error(error?.response?.data?.message);
+    console.log("Login IUWEHRJKNDX. response:", error);
+    toast.error(error?.response?.data?.errors?.message || "Login failed");
   } finally {
     dispatch({ type: "SET_LOGIN_SUBMITTING", payload: false });
   }

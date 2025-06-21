@@ -67,7 +67,7 @@ const NewPasswordModule = () => {
 
   return (
     <Suspense fallback={<div className="p-4 text-center">Loading...</div>}>
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+      <div className="min-flex items-center justify-center bg-gray-100 p-4">
         <div className="w-full max-w-lg p-8">
           <header className="text-center mb-8 grid gap-3">
             <h1 className="font-bold uppercase text-xl">Ticketing System</h1>

@@ -5,7 +5,7 @@ import { TbEye, TbEyeOff } from "react-icons/tb";
 type InputProps<T extends Record<string, unknown>> = {
   label: string;
   name: keyof T;
-  type?: "text" | "email" | "password" | "number";
+  type?: "text" | "email" | "password" | "number" | "tel" | "date";
   placeholder?: string;
   register: UseFormRegister<T>;
   error?: FieldError;

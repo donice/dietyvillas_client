@@ -23,7 +23,7 @@ export const Button: React.FC<ButtonProps> = ({
   className = "",
 }) => {
   const baseStyles =
-    "flex items-center justify-center gap-2 px-3 py-3 rounded-lg text-white font-medium transition-all ease-in-out";
+    "cursor-pointer flex items-center justify-center gap-2 px-3 py-3 rounded-lg text-white font-medium transition-all ease-in-out";
   const enabledStyles = "bg-amber-400 hover:bg-amber-400 hover:rounded-lg";
   const disabledStyles = "bg-gray-400 cursor-not-allowed";
   const loadingSpinner = (
@@ -71,7 +71,7 @@ export const FormButton: React.FC<ButtonProps> = ({
   className = "",
 }) => {
   const baseStyles =
-    "fw-full p-2.5 font-bold bg-stone-100 text-stone-800 rounded-lg hover:bg-stone-400 transition-all ease-in-out";
+    "cursor-pointer fw-full p-2.5 font-bold bg-stone-100 text-stone-800 rounded-lg hover:bg-stone-400 transition-all ease-in-out";
   const enabledStyles = "bg-gray-600 hover:bg-gray-700 hover:rounded-lg";
   const disabledStyles = "bg-gray-400 cursor-not-allowed";
   const loadingSpinner = (

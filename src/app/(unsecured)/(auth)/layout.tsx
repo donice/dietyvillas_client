@@ -1,7 +1,7 @@
 import { appConfig } from "@/utils/constants";
 import { Metadata } from "next";
 import React from "react";
-import HomeNav from "./(home)/_components/HomeNav";
+import AuthLayoutHeader from "./_components/AuthLayoutHeader";
 
 export const metadata: Metadata = {
   title: appConfig.name,
@@ -15,7 +15,8 @@ const MainLayout = ({
 }>) => {
   return (
     <div>
-      <HomeNav />
+      <AuthLayoutHeader />
+
       {children}
     </div>
   );
