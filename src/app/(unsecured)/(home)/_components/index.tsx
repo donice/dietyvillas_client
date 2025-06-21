@@ -15,10 +15,13 @@ const HomePageModule = () => {
     }
   })
 
+
+
   return (
     <div>
-      <HomeNav data={categories} loading={categoriesIsLoading} />
+      <HomeNav data={categories} loading={categoriesIsLoading} onItemChange={(item) => console.log(item)} />
       <Header />
+
     </div>
   )
 }
