@@ -12,16 +12,16 @@ const Filters = () => {
     console.log(data);
   };
   return (
-    <div className="border rounded-full p-3 border-gray-300 max-w-5xl mx-auto">
-      <form onSubmit={handleSubmit(onSubmit)} className="flex justify-between">
-        <div className=" flex justify-center items-center px-4">
+    <div className="border rounded-full p-1.5 md:p-3 border-gray-300 max-w-5xl mx-auto">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex md:justify-between">
+        <div className="flex justify-center items-center px-4">
           <label htmlFor="email">
-            <GrLocation className="text-xl text-gray-400" />{" "}
+            <GrLocation className="md:text-xl text-gray-400" />{" "}
             <span className="sr-only">Location</span>
           </label>
           <input
             type="text"
-            className="outline-0 px-2 text-lg"
+            className="outline-0 px-2 md:text-lg w-full"
             placeholder="Search Location"
             {...register("location", {
               required: "Required",

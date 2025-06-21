@@ -24,7 +24,15 @@ type SignUpForm = {
 };
 
 const SignupModule = () => {
-  const router = useRouter();
+    const router = useRouter();
+    const [country_id, setCountry_id] = React.useState<number>(0);
+    const [country, setCountry] = React.useState<{
+    flag: string;
+    dialing_code: string;
+  }>({
+    flag: "",
+    dialing_code: "",
+  });
 
   const {
     handleSubmit,
@@ -46,8 +54,11 @@ const SignupModule = () => {
     },
   });
 
+  const countryId = watch("country_id");
+  const stateId = watch("state_id");
+
   const mutation = useMutation({
-    mutationFn: (data: SignUpForm) => axiosInstance.post("/auth/signup", data),
+    mutationFn: (data: SignUpForm) => axiosInstance.post("/account/create", data),
     onSuccess: () => {
       toast.success("Signup successful");
       router.push(PAGE_ROUTES.DASHBOARD.href);
@@ -58,28 +69,31 @@ const SignupModule = () => {
   });
 
   const onSubmit = (data: SignUpForm) => {
-    mutation.mutate(data);
+    console.log("Form Data:", data);
+    // mutation.mutate(data);
   };
 
   const { data: countries } = useQuery({
     queryKey: ["countries"],
-    queryFn: () => axiosInstance.get(`/countries`).then((res) => res?.data?.data),
+    queryFn: () =>
+      axiosInstance.get("/countries").then((res) => res?.data?.data),
   });
 
-  const countryId = watch("country_id");
-  const stateId = watch("state_id");
-
-  const { data: states } = useQuery({
+  const { data: states, isLoading: statesIsLoading } = useQuery({
     queryKey: ["states", countryId],
     queryFn: () =>
-      axiosInstance.get(`/countries/states/${countryId}`).then((res) => res?.data?.data),
+      axiosInstance
+        .get(`/countries/state?country_id=${countryId}`)
+        .then((res) => res?.data?.data),
     enabled: !!countryId,
   });
 
-  const { data: cities } = useQuery({
+  const { data: cities, isLoading: citiesIsLoading } = useQuery({
     queryKey: ["cities", stateId],
     queryFn: () =>
-      axiosInstance.get(`/countries/cities/${stateId}`).then((res) => res?.data?.data),
+      axiosInstance
+        .get(`/countries/state/area?state_id=${stateId}`)
+        .then((res) => res?.data?.data),
     enabled: !!stateId,
   });
 
@@ -118,24 +132,18 @@ const SignupModule = () => {
             error={errors.email}
             validation={{ required: "Email is required" }}
           />
-          <TextInput
-            label="Password"
-            name="password"
-            register={register}
-            type="password"
-            placeholder="**********"
-            error={errors.password}
-            validation={{ required: "Password is required" }}
-          />
           <SelectInput
             label="Country"
             name="country_id"
             register={register}
             options={
-              countries?.map((country: any) => ({
-                value: country.id,
-                label: country.name,
-              })) || []
+              countries
+                ?.sort((a: any, b: any) => a.name.localeCompare(b.name))
+                .map((country: any) => ({
+                  value: country.id,
+                  label: country.name,
+                  fullObject: country,
+                })) || []
             }
             placeholder="Select Country"
             error={errors.country_id}
@@ -143,8 +151,20 @@ const SignupModule = () => {
               required: "Country is required",
               valueAsNumber: true,
             }}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              const selectedId = Number(e.target.value);
+
+              console.log("Selected Country ID:", selectedId);
+              const selectedCountry = countries?.find(
+                (country: any) => country.id === selectedId
+              );
+              if (selectedCountry) {
+                setCountry(selectedCountry);
+              }
+            }}
           />
-          {countryId > 0 && (
+
+          {countryId > 0 && states?.length > 0 && (
             <SelectInput
               label="State"
               name="state_id"
@@ -182,15 +202,23 @@ const SignupModule = () => {
               }}
             />
           )}
-          <TextInput
-            label="Phone Number"
-            name="phone"
-            register={register}
-            type="tel"
-            placeholder="+234..."
-            error={errors.phone}
-            validation={{ required: "Phone number is required" }}
-          />
+          <div className="relative">
+            <span className="absolute top-9 left-4 z-10 border-r-2 border-gray-300 pr-2">
+              {country.flag} {country.dialing_code}
+            </span>
+
+            <TextInput
+              label="Phone Number"
+              name="phone"
+              register={register}
+              type="tel"
+              placeholder=""
+              error={errors.phone}
+              validation={{ required: "Phone number is required" }}
+              className="pl-24"
+            />
+          </div>
+
           <TextInput
             label="Date of Birth"
             name="date_of_birth"
@@ -200,14 +228,15 @@ const SignupModule = () => {
             error={errors.date_of_birth}
             validation={{ required: "Date of birth is required" }}
           />
-          <div className="flex justify-end -mt-2 font-medium text-primary text-sm">
-            <span
-              className="cursor-pointer hover:underline"
-              onClick={() => router.push(PAGE_ROUTES.AUTH.FORGOT_PASSWORD.href)}
-            >
-              Forgot Password?
-            </span>
-          </div>
+          <TextInput
+            label="Password"
+            name="password"
+            register={register}
+            type="password"
+            placeholder="**********"
+            error={errors.password}
+            validation={{ required: "Password is required" }}
+          />
           <Button text="Sign Up" loading={mutation.isPending} />
         </form>
       </div>

@@ -98,6 +98,7 @@ type SelectInputProps<T extends Record<string, any>> = {
   disabled?: boolean;
   className?: string;
   props?: React.SelectHTMLAttributes<HTMLSelectElement>;
+  onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 
 export const SelectInput = <T extends Record<string, any>>({
@@ -111,6 +112,7 @@ export const SelectInput = <T extends Record<string, any>>({
   validation,
   disabled = false,
   className = "",
+  onChange,
   props
 }: SelectInputProps<T>) => {
   const getErrorMessage = (error: FieldError | undefined): string => {
@@ -137,6 +139,7 @@ export const SelectInput = <T extends Record<string, any>>({
         className={`w-full px-3 py-3 border bg-gray-100 font-bold rounded-md focus:ring focus:ring-gray-300 focus:outline-none ${
           error ? "border-1.5 border-red-500" : "border-gray-100"
         } ${className}`}
+
         {...props}
       >
         <option value="">{placeholder}</option>
