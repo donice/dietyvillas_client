@@ -73,7 +73,11 @@ const SignupModule = () => {
       router.push(PAGE_ROUTES.DASHBOARD.href);
     },
     onError: (error: any) => {
+      console.error("Error signing up:", error?.response?.data?.errors?.code);
       toast.error(error?.response?.data?.resp_message || "Error signing up");
+      if (error?.response?.data?.errors?.code === "10") {
+        router.push("/verify-email?email=" + watch("email"));
+      }
     },
   });
 
