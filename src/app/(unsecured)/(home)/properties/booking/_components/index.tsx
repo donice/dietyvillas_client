@@ -8,6 +8,7 @@ import PaystackLogo from "./assets/paystack.png";
 import StripeLogo from "./assets/stripe.png";
 import Image, { StaticImageData } from "next/image";
 import { TbStarFilled } from "react-icons/tb";
+import { Button } from "@/components/common/button";
 
 const gateways: {
   name: string;
@@ -42,26 +43,38 @@ const DynamicBookingModule = () => {
   return (
     <div className="space-y-6 px-4 py-10 mx-auto max-w-7xl text-gray-600">
       <section className="grid md:grid-cols-2 gap-20">
-        <div className="border border-gray-300 rounded-3xl h-fit transition-all">
-          {gateways.map((item, idx) => (
-            <div
-              key={idx}
-              className={`flex justify-between p-5 ${
-                idx == 0 ? "border-b border-gray-200" : null
-              }`}
-              onClick={() => {
-                setPaymentGateway(item?.name)
-              }}
-            >
-              <Image
-                src={item.img}
-                alt={item.name}
-                width={item.name == "paystack" ? 100 : 50}
-              />
-              <div className={`w-4 h-4 rounded-full ${paymentGateway == item.name ? "border-5 border-gray-700" : "border border-gray-400"}`}></div>
-            </div>
-          ))}
+        <div className="grid gap-4 transition-all h-fit">
+          <div className="border border-gray-300 rounded-3xl h-fit ">
+            {gateways.map((item, idx) => (
+              <div
+                key={idx}
+                className={`flex justify-between p-5 ${
+                  idx == 0 ? "border-b border-gray-200" : null
+                }`}
+                onClick={() => {
+                  setPaymentGateway(item?.name);
+                }}
+              >
+                <Image
+                  src={item.img}
+                  alt={item.name}
+                  width={item.name == "paystack" ? 100 : 50}
+                />
+                <div
+                  className={`w-4 h-4 rounded-full ${
+                    paymentGateway == item.name
+                      ? "border-5 border-gray-700"
+                      : "border border-gray-400"
+                  }`}
+                ></div>
+              </div>
+            ))}
+          </div>
 
+          <Button
+            text={"Next"}
+            className="py-4 rounded-3xl bg-gray-900 hover:bg-gray-700"
+          />
         </div>
         <div className="w-full border border-gray-100 shadow p-4 rounded-xl  max-w-sm">
           <div className="flex gap-4 items-center">
