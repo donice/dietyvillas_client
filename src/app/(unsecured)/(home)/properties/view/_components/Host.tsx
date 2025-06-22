@@ -26,8 +26,8 @@ const Host = ({ data }: any) => {
       <div className="flex items-center gap-4 mb-4 border-b border-gray-200 pb-4">
         <div className="w-12 h-12 bg-amber-500 rounded-full"></div>
         <div>
-          <h4>Hosted by Donice Ubaru</h4>
-          <p>2 years hosting</p>
+          <h4 className="font-medium">Hosted by {data?.users?.firstname + " " + data?.users?.lastname}</h4>
+          <p className="text-gray-400">2 years hosting</p>
         </div>
       </div>
       <div>

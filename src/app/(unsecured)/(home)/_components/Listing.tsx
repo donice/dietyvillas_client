@@ -40,10 +40,15 @@ const Listing = ({ data, loading }: ListingProps) => {
           const isFirstInRow = index % columns === 0;
           const isLastInRow = (index + 1) % columns === 0;
 
+
           return (
             <Link
               key={property.id}
-              href={"/properties/view?url=" + property.url}
+              href={
+                property?.platform == "deity-villas"
+                  ? "/properties/view?url=" + property.url
+                  : property.url
+              }
               rel="noopener noreferrer"
               className={`flex flex-col overflow-hidden transition ${
                 isFirstInRow ? "rounded-l-2xl" : ""

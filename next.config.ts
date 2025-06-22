@@ -7,6 +7,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "assets.hospitable.com",
       },
+      {
+        protocol: "https",
+        hostname: "storage-letscomanage-staging.s3.amazonaws.com",
+      },
     ],
   },
 };

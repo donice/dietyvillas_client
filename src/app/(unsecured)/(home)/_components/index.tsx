@@ -24,11 +24,9 @@ const HomePageModule = () => {
         {
           params: {
             property_categories_id: activeCategory,
-            user_id: 5,
           },
         }
       );
-      // const response = await axiosInstance.get(`/properties`);
       return response.data;
     },
   });
