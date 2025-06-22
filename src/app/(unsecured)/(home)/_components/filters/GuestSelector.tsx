@@ -54,12 +54,12 @@ export default function GuestSelector({ value = defaultGuests, onChange }: Guest
 
   return (
     <div className="relative inline-block" ref={ref}>
-      <button
+      <span
         onClick={() => setIsOpen(!isOpen)}
         className="min-w-[200px] text-left"
       >
         {guestSummary()}
-      </button>
+      </span>
 
       {isOpen && (
         <div className="absolute z-10 mt-2 bg-white border border-gray-400 rounded-xl shadow-lg p-4 w-80">
@@ -77,9 +77,9 @@ export default function GuestSelector({ value = defaultGuests, onChange }: Guest
                 <div className="text-xs text-gray-500">{item.sub}</div>
               </div>
               <div className="flex items-center gap-2">
-                <button
+                <span
                   onClick={() => handleCountChange(item.type as GuestType, -1)}
-                  disabled={value[item.type as GuestType] === 0}
+                  // disabled={value[item.type as GuestType] === 0}
                   className={`w-8 h-8 rounded-full text-lg flex items-center justify-center border ${
                     value[item.type as GuestType] === 0
                       ? "text-gray-400 border-gray-300"
@@ -87,14 +87,14 @@ export default function GuestSelector({ value = defaultGuests, onChange }: Guest
                   }`}
                 >
                   –
-                </button>
+                </span>
                 <span className="w-5 text-center">{value[item.type as GuestType]}</span>
-                <button
+                <span
                   onClick={() => handleCountChange(item.type as GuestType, 1)}
                   className="w-8 h-8 rounded-full text-lg flex items-center justify-center border border-gray-500"
                 >
                   +
-                </button>
+                </span>
               </div>
             </div>
           ))}

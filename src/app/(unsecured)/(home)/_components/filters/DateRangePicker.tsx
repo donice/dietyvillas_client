@@ -140,26 +140,26 @@ export default function DateRangePicker({
         aria-label={`Calendar for ${month + 1}/${year}`}
       >
         <div className="flex justify-between items-center mb-2">
-          <button
+          <span
             onClick={() => setCurrentMonth(new Date(year, month - 1, 1))}
             className="px-2 py-1 rounded hover:bg-gray-200"
             aria-label="Previous month"
           >
             ◀
-          </button>
+          </span>
           <div className="text-center font-semibold">
             {new Intl.DateTimeFormat(locale, {
               month: "long",
               year: "numeric",
             }).format(new Date(year, month))}
           </div>
-          <button
+          <span
             onClick={() => setCurrentMonth(new Date(year, month + 1, 1))}
             className="px-2 py-1 rounded hover:bg-gray-200"
             aria-label="Next month"
           >
             ▶
-          </button>
+          </span>
         </div>
         <div className="grid grid-cols-7 text-xs text-gray-500 mb-1">
           {Array.from({ length: 7 }, (_, i) =>
@@ -175,14 +175,14 @@ export default function DateRangePicker({
         <div className="grid grid-cols-7 text-sm">
           {dates.map((date, index) =>
             date ? (
-              <button
+              <span
                 key={index}
                 onClick={() => handleDateClick(date)}
                 className={` p-1 focus:outline focus:ring-2 focus:ring-amber-400 ${getDateClass(date)} `}
                 aria-pressed={isSelected(date)}
               >
                 {date.getDate()}
-              </button>
+              </span>
             ) : (
               <div key={index}></div>
             )
@@ -199,7 +199,7 @@ export default function DateRangePicker({
 
   return (
     <div className="relative inline-block" ref={ref}>
-      <button
+      <span
         onClick={() => setIsOpen(!isOpen)}
         className=" rounded min-w-[240px] text-left"
         aria-haspopup="dialog"
@@ -210,7 +210,7 @@ export default function DateRangePicker({
           : value?.startDate
           ? `${formatDate(value.startDate)}`
           : "Add Date"}
-      </button>
+      </span>
 
       {isOpen && (
         <div

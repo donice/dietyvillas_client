@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import DateRangePicker from "@/app/(unsecured)/(home)/_components/filters/DateRangePicker";
 import { Button } from "@/components/common/button";
 import GuestSelector from "@/app/(unsecured)/(home)/_components/filters/GuestSelector";
@@ -50,7 +50,7 @@ const PriceCalculator = () => {
 
   const onSubmit = async (data: BookingProps) => {
     console.log("Booking data:", data);
-    bookMutation.mutate(data)
+    // bookMutation.mutate(data)
   }
 
   return (
@@ -73,7 +73,7 @@ const PriceCalculator = () => {
           text={"Check availability"}
           className="py-4"
           disabled={range?.startDate == null && guests?.adults > 0}
-          loading
+          loading={bookMutation.isPending}
         />
       </form>
       <Button
