@@ -5,7 +5,7 @@ const Description = ({ data }: any) => {
   return (
     <div className="py-6 border-b border-gray-200">
       <p className="text-gray-700 mb-3">
-       {data?.special_desc}
+       {data?.desc}
       </p>
       <button
         onClick={() => handleToggleDialog("addCategory", true)}
@@ -20,7 +20,7 @@ const Description = ({ data }: any) => {
         header="Description"
       >
         <p className="text-gray-700 mb-4 pt-5">
-          {data?.special_desc}
+          {data?.desc}
         </p>
       </CustomDialog>
     </div>

@@ -16,7 +16,7 @@ interface DateRangePickerProps {
   locale?: string;
 }
 
-export default function DateRangePicker({
+export default function CheckinDate({
   value,
   onChange,
   minRangeDays = 0,

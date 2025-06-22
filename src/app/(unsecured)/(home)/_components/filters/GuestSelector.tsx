@@ -56,13 +56,13 @@ export default function GuestSelector({ value = defaultGuests, onChange }: Guest
     <div className="relative inline-block" ref={ref}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="border rounded px-3 py-2 min-w-[200px] text-left"
+        className="min-w-[200px] text-left"
       >
         {guestSummary()}
       </button>
 
       {isOpen && (
-        <div className="absolute z-10 mt-2 bg-white border rounded shadow-lg p-4 w-80">
+        <div className="absolute z-10 mt-2 bg-white border border-gray-400 rounded-xl shadow-lg p-4 w-80">
           <h3 className="font-semibold text-lg mb-3">Who's expected</h3>
 
           {[

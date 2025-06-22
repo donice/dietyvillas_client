@@ -37,6 +37,9 @@ export default function DateRangePicker({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   const generateCalendar = (month: number, year: number) => {
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
@@ -63,6 +66,8 @@ export default function DateRangePicker({
   };
 
   const handleDateClick = (date: Date) => {
+    if (date < today) return;
+
     if (!tempRange.startDate || (tempRange.startDate && tempRange.endDate)) {
       const newRange = { startDate: date, endDate: undefined };
       setTempRange(newRange);
@@ -72,10 +77,14 @@ export default function DateRangePicker({
       let startDate = start < date ? start : date;
       let endDate = start < date ? date : start;
 
-      const diffDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24));
+      const diffDays = Math.ceil(
+        (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)
+      );
 
       if (diffDays < minRangeDays || diffDays > maxRangeDays) {
-        alert(`Please select a range between ${minRangeDays} and ${maxRangeDays} days.`);
+        alert(
+          `Please select a range between ${minRangeDays} and ${maxRangeDays} days.`
+        );
         return;
       }
 
@@ -97,11 +106,39 @@ export default function DateRangePicker({
     return false;
   };
 
+  const getDateClass = (date: Date) => {
+  if (date < today) return "text-gray-400 cursor-not-allowed bg-transparent";
+
+  if (tempRange.startDate && tempRange.endDate) {
+    if (date.getTime() === tempRange.startDate.getTime()) {
+      return "bg-gray-900 text-white rounded-l-3xl";
+    }
+    if (date.getTime() === tempRange.endDate.getTime()) {
+      return "bg-gray-900 text-white rounded-r-3xl";
+    }
+    if (date > tempRange.startDate && date < tempRange.endDate) {
+      return "bg-gray-200 text-black";
+    }
+  }
+
+  if (tempRange.startDate && !tempRange.endDate) {
+    if (date.getTime() === tempRange.startDate.getTime()) {
+      return "bg-amber-500 text-white";
+    }
+  }
+
+  return "hover:bg-gray-200";
+};
+
+
   const renderCalendar = (month: number, year: number) => {
     const dates = generateCalendar(month, year);
 
     return (
-      <div className="w-64 p-2" aria-label={`Calendar for ${month + 1}/${year}`}>
+      <div
+        className="w-64 p-2"
+        aria-label={`Calendar for ${month + 1}/${year}`}
+      >
         <div className="flex justify-between items-center mb-2">
           <button
             onClick={() => setCurrentMonth(new Date(year, month - 1, 1))}
@@ -127,7 +164,7 @@ export default function DateRangePicker({
         <div className="grid grid-cols-7 text-xs text-gray-500 mb-1">
           {Array.from({ length: 7 }, (_, i) =>
             new Intl.DateTimeFormat(locale, { weekday: "short" }).format(
-              new Date(2023, 9, i + 1) // fixed week for labels
+              new Date(2023, 9, i + 1)
             )
           ).map((day, index) => (
             <div key={index} className="text-center">
@@ -135,17 +172,13 @@ export default function DateRangePicker({
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-7 gap-1 text-sm">
+        <div className="grid grid-cols-7 text-sm">
           {dates.map((date, index) =>
             date ? (
               <button
                 key={index}
                 onClick={() => handleDateClick(date)}
-                className={`rounded p-1 focus:outline focus:ring-2 focus:ring-amber-400 ${
-                  isSelected(date)
-                    ? "bg-amber-500 text-white"
-                    : "hover:bg-gray-200"
-                }`}
+                className={` p-1 focus:outline focus:ring-2 focus:ring-amber-400 ${getDateClass(date)} `}
                 aria-pressed={isSelected(date)}
               >
                 {date.getDate()}
@@ -192,3 +225,4 @@ export default function DateRangePicker({
     </div>
   );
 }
+
