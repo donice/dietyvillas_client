@@ -73,6 +73,7 @@ const PriceCalculator = () => {
           text={"Check availability"}
           className="py-4"
           disabled={range?.startDate == null && guests?.adults > 0}
+          loading
         />
       </form>
       <Button
