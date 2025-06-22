@@ -4,7 +4,9 @@ import { Button } from "@/components/common/button";
 import GuestSelector from "@/app/(unsecured)/(home)/_components/filters/GuestSelector";
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axiosInstance";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export const formatDateLocale = (s: Date | undefined) =>
   s
@@ -20,7 +22,9 @@ export const formatDateLocale = (s: Date | undefined) =>
           .padStart(2, "0")}`)(new Date(s))
     : null;
 
-const PriceCalculator = ({data}: any) => {
+const PriceCalculator = ({ data }: any) => {
+  const router = useRouter();
+  const [propertyUrl, setPropertyUrl] = useState(0)
   const [range, setRange] = useState<{ startDate?: Date; endDate?: Date }>({});
   const [guests, setGuests] = useState<any>({
     adults: 0,
@@ -37,18 +41,32 @@ const PriceCalculator = ({data}: any) => {
     },
 
     onSuccess: (data) => {
-      console.log("Booking successful:", data);
+      toast.success(data?.data?.resp_description || "Booking successful!");
+      setRange({});
+      setGuests({
+        adults: 0,
+        children: 0,
+        infants: 0,
+        pets: 0,
+      });
+
+      console.log("Booking success:", data);
+
+      router.push(`/properties/booking?url=${propertyUrl}&booking_id=${data?.data?.data?.id}&amount=${data?.data?.data?.amount}` );
     },
 
-    onError: (data) => {
-      console.log("Book")
-    }
+    onError: (error) => {
+      const errorData = (error as any)?.response?.data;
+      let errorMessages = "Booking failed!";
+      if (errorData?.errors && Array.isArray(errorData.errors)) {
+        errorMessages = errorData.errors.map((e: any) => e.message).join(" ");
+      }
+      toast.error(errorMessages);
+      console.log("Booking error:", errorMessages, errorData);
+    },
   });
 
-  const {
-    handleSubmit,
-    setValue,
-  } = useForm<BookingProps>({
+  const { handleSubmit, setValue } = useForm<BookingProps>({
     defaultValues: {
       property_id: data?.id,
       check_in: formatDateLocale(range.startDate),
@@ -68,11 +86,12 @@ const PriceCalculator = ({data}: any) => {
 
   useEffect(() => {
     setValue("property_id", data?.id);
+    setPropertyUrl(data?.url)
   }, [data]);
 
   const onSubmit = async (data: BookingProps) => {
     console.log("Booking data:", data);
-    bookMutation.mutate(data)
+    bookMutation.mutate(data);
   };
 
   return (
