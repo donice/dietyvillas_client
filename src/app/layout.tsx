@@ -32,7 +32,7 @@ export default function RootLayout({
           </QueryClientProvider>
         </AuthProvider>
         <Toaster
-          position="top-right"
+          position="bottom-center"
           reverseOrder={false}
         />
       </body>

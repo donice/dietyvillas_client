@@ -1,14 +1,15 @@
 "use client";
 import axiosInstance from "@/lib/axiosInstance";
-import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 
 import PaystackLogo from "./assets/paystack.png";
 import StripeLogo from "./assets/stripe.png";
 import Image, { StaticImageData } from "next/image";
-import { TbStarFilled } from "react-icons/tb";
 import { Button } from "@/components/common/button";
+import toast from "react-hot-toast";
+import Summary from "./Summary";
 
 const gateways: {
   name: string;
@@ -25,20 +26,58 @@ const gateways: {
 ];
 
 const DynamicBookingModule = () => {
+  const router = useRouter();
   const [paymentGateway, setPaymentGateway] = useState("paystack");
   const searchParams = useSearchParams();
 
   const url = searchParams.get("url");
+  const booking_id = searchParams.get("booking_id");
+  const amount = searchParams.get("amount");
 
-  const { data: dynamicPropertyInfo, isLoading } = useQuery({
-    queryKey: ["dynamicPropertyInfo", url],
-    queryFn: async () => {
-      const res = await axiosInstance.get(`/properties/view?url=${url}`);
-      return res.data?.data[0];
+
+  const mutatePaystackPayment = useMutation({
+    mutationKey: ["mutatePaystackPayment"],
+    mutationFn: async () => {
+      const res = axiosInstance.post("/properties/payment/paystack", {
+        amount: amount,
+        booking_id: booking_id,
+        description: "Paystack Payment for:" + booking_id,
+      });
+      return res;
+    },
+    onSuccess: (res) => {
+      const { resp_code, data, resp_description } = res.data;
+      if (resp_code == "00") {
+        toast.success(resp_description || " ");
+        (data?.url !== "" || null) && router.push(data?.url);
+      } else {
+        toast.error("Error making payment")
+      }
+      console.log(res?.data);
     },
   });
 
-  console.log("dynamicPropertyInfo", dynamicPropertyInfo);
+  const mutateStripePayment = useMutation({
+    mutationKey: ["mutateStripePayment"],
+    mutationFn: async () => {
+      const res = axiosInstance.post("/properties/payment/stripe", {
+        amount: amount,
+        booking_id: booking_id,
+        description: "Stack Payment for:" + booking_id,
+      });
+      return res;
+    },
+     onSuccess: (res) => {
+      const { resp_code, data, resp_description } = res.data;
+      if (resp_code == "00") {
+        toast.success(resp_description || " ");
+        (data?.url !== "" || null) && router.push(data?.url);
+      } else {
+        toast.error("Error making payment")
+      }
+      console.log(res?.data);
+    },
+  });
 
   return (
     <div className="space-y-6 px-4 py-10 mx-auto max-w-7xl text-gray-600">
@@ -73,62 +112,18 @@ const DynamicBookingModule = () => {
 
           <Button
             text={"Next"}
+            onClick={() =>
+              paymentGateway == "paystack"
+                ? mutatePaystackPayment.mutate()
+                : mutateStripePayment.mutate()
+            }
             className="py-4 rounded-3xl bg-gray-900 hover:bg-gray-700"
+            loading={
+              mutatePaystackPayment.isPending || mutateStripePayment.isPending
+            }
           />
         </div>
-        <div className="w-full border border-gray-100 shadow p-4 rounded-xl  max-w-sm">
-          <div className="flex gap-4 items-center">
-            <div className="w-32 h-32 rounded-lg bg-gray-100">
-              {dynamicPropertyInfo?.property_images[0].image_link ? (
-                <Image
-                  src={
-                    dynamicPropertyInfo?.property_images[0].image_link || null
-                  }
-                  width={100}
-                  height={100}
-                  alt={dynamicPropertyInfo?.title}
-                />
-              ) : null}
-            </div>
-            <div>
-              <h1 className="font-semibold">{dynamicPropertyInfo?.title}</h1>
-              <span className="flex items-center gap-2">
-                <TbStarFilled />{" "}
-                {dynamicPropertyInfo?.reviews_and_rating.length} (
-                {dynamicPropertyInfo?.reviews_and_rating.length}){" "}
-              </span>
-            </div>
-          </div>
-
-          <div className="my-3">
-            <h3 className="text-gray-800 font-semibold">Free cancelation</h3>
-            <p className="text-sm">Cancel within 24 hours for a full refund.</p>
-          </div>
-
-          <div className="border-y py-4 border-gray-200">
-            <p className="text-gray-800 font-semibold">Free cancelation</p>
-            <p className="text-sm">Cancel within 24 hours for a full refund.</p>
-          </div>
-          <div className="py-4">
-            <p className="text-gray-800 font-semibold">Price details</p>
-            <p className="text-sm flex justify-between">
-              <span>N170,000 X 5 days</span>
-              <span>N850,000</span>
-            </p>
-            <p className="text-sm flex justify-between">
-              <span>Cleaning fees</span>
-              <span>N40,000</span>
-            </p>
-            <p className="text-sm flex justify-between">
-              <span>Deity fee (2%)</span>
-              <span>N34,000</span>
-            </p>
-            <p className="text-sm flex justify-between mt-3 font-semibold text-gray-950">
-              <span>Total</span>
-              <span>N34,000</span>
-            </p>
-          </div>
-        </div>
+       <Summary url={url} />
       </section>
     </div>
   );
