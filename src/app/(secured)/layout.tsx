@@ -17,9 +17,7 @@ const MainLayout = ({
   return (
     <AuthGuard>
       <TopNav />
-      <div>
-        <section className="md:ml-64 mt-16 p-4 md:p-10 max-w-7xl">{children}</section>
-      </div>
+        <section className="mt-24 p-4 max-w-7xl mx-auto">{children}</section>
     </AuthGuard>
   );
 };

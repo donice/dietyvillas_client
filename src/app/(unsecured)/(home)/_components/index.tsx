@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import HomeNav from "./HomeNav";
 import Header from "./Header";
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "@/lib/axiosInstance";
@@ -25,6 +24,7 @@ const HomePageModule = () => {
         {
           params: {
             property_categories_id: activeCategory,
+            user_id: 5,
           },
         }
       );

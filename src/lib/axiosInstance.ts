@@ -7,8 +7,14 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
+    let userData = null;
+    if (typeof window !== 'undefined') {
+      userData = window.sessionStorage.getItem('USER_DATA');
+    }
     config.headers['Authorization'] = axios.defaults.headers.common['Authorization'];
     config.headers['lang'] = 'en';
+    config.headers['UserType'] = '1';
+    config.headers['userId'] = userData ? `${JSON.parse(userData).email}` : '';
     return config;
   },
   (error) => {

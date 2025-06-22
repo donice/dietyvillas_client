@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { SkeletonLoader } from "./skeleton/HeaderSkeleton";
 import Filters from "./Filters";
+import GuestSelector from "./filters/GuestSelector";
 
 interface Category {
   id: string;
@@ -15,6 +16,16 @@ interface HeaderProps {
 
 const Header = ({ data, loading, onItemChange }: HeaderProps) => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
+  const [guests, setGuests] = useState<any>({
+  adults: 2,
+  children: 1,
+  infants: 0,
+  pets: 0,
+});
+
+{/* <GuestSelector value={guests} onChange={setGuests} /> */}
+
 
   const handleCategoryClick = (id: string) => {
     setActiveCategory(id);

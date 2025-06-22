@@ -43,7 +43,7 @@ const Listing = ({ data, loading }: ListingProps) => {
           return (
             <Link
               key={property.id}
-              href={"/properties/" + property.id}
+              href={"/properties/view?url=" + property.url}
               rel="noopener noreferrer"
               className={`flex flex-col overflow-hidden transition ${
                 isFirstInRow ? "rounded-l-2xl" : ""
