@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DateRangePicker from "@/app/(unsecured)/(home)/_components/filters/DateRangePicker";
 import { Button } from "@/components/common/button";
 import GuestSelector from "@/app/(unsecured)/(home)/_components/filters/GuestSelector";
@@ -20,7 +20,7 @@ export const formatDateLocale = (s: Date | undefined) =>
           .padStart(2, "0")}`)(new Date(s))
     : null;
 
-const PriceCalculator = () => {
+const PriceCalculator = ({data}: any) => {
   const [range, setRange] = useState<{ startDate?: Date; endDate?: Date }>({});
   const [guests, setGuests] = useState<any>({
     adults: 0,
@@ -33,29 +33,54 @@ const PriceCalculator = () => {
     mutationKey: ["bookMutation"],
     mutationFn: async (data: BookingProps) => {
       const res = axiosInstance.post("/bookings/create", data);
+      return res;
     },
+
+    onSuccess: (data) => {
+      console.log("Booking successful:", data);
+    },
+
+    onError: (data) => {
+      console.log("Book")
+    }
   });
 
   const {
     handleSubmit,
-    formState: { errors },
+    setValue,
   } = useForm<BookingProps>({
     defaultValues: {
-      property_id: 0,
+      property_id: data?.id,
       check_in: formatDateLocale(range.startDate),
       check_out: formatDateLocale(range.endDate),
       no_of_guest: guests.adults + guests.children,
     },
   });
 
+  useEffect(() => {
+    setValue("no_of_guest", guests.adults + guests.children);
+  }, [guests]);
+
+  useEffect(() => {
+    setValue("check_in", formatDateLocale(range.startDate));
+    setValue("check_out", formatDateLocale(range.endDate));
+  }, [range]);
+
+  useEffect(() => {
+    setValue("property_id", data?.id);
+  }, [data]);
+
   const onSubmit = async (data: BookingProps) => {
     console.log("Booking data:", data);
-    // bookMutation.mutate(data)
-  }
+    bookMutation.mutate(data)
+  };
 
   return (
     <div className="flex flex-col gap-4">
-      <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl w-full mx-auto grid gap-4 shadow-md p-10 rounded-3xl">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="max-w-2xl w-full mx-auto grid gap-4 shadow-md p-10 rounded-3xl"
+      >
         <h3 className="text-xl font-medium mb-5">Add dates for prices</h3>
         <div className="border border-gray-400 rounded-2xl">
           <div className="grid grid-cols-2 border-b border-gray-400">

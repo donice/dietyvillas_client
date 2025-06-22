@@ -10,7 +10,6 @@ import Host from "./Host";
 import CheckinDate from "./CheckinDate";
 import PriceCalculator from "./PriceCalculator";
 import Location from "./Location";
-// import Reviews from "./Reviews";
 
 const Skeleton = ({ className }: { className?: string }) => (
   <div className={`animate-pulse bg-gray-300 rounded ${className}`} />
@@ -32,18 +31,18 @@ const DynamicPropertyDetailsModule = () => {
     },
   });
 
-  // if (isLoading) {
-  //   return (
-  //     <div className="space-y-6 px-4 py-10 mx-auto max-w-7xl">
-  //       <Skeleton className="h-80 w-full" />
-  //       <Skeleton className="h-8 w-1/2" />
-  //       <Skeleton className="h-24 w-full" />
-  //       <Skeleton className="h-16 w-full" />
-  //       <Skeleton className="h-20 w-full" />
-  //       <Skeleton className="h-32 w-full" />
-  //     </div>
-  //   );
-  // }
+  if (isLoading) {
+    return (
+      <div className="space-y-6 px-4 py-10 mx-auto max-w-7xl">
+        <Skeleton className="h-80 w-full" />
+        <Skeleton className="h-8 w-1/2" />
+        <Skeleton className="h-24 w-full" />
+        <Skeleton className="h-16 w-full" />
+        <Skeleton className="h-20 w-full" />
+        <Skeleton className="h-32 w-full" />
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 pt-10 pb-40 mx-auto max-w-7xl">
@@ -66,7 +65,7 @@ const DynamicPropertyDetailsModule = () => {
           />
         </section>
 
-        <PriceCalculator />
+        <PriceCalculator data={dynamicPropertyInfo}/>
       </div>
       <Location data={dynamicPropertyInfo}/>
 
