@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 
 type DateRange = {
   startDate?: Date;
@@ -30,8 +31,7 @@ export default function DateRangePicker({
   }, [value]);
 
   const today = new Date();
-  today.setHours(0, 0, 0, 0); // Normalize to midnight for comparisons
-
+  today.setHours(0, 0, 0, 0);
   const generateCalendar = (month: number, year: number) => {
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
@@ -55,7 +55,7 @@ export default function DateRangePicker({
   };
 
   const handleDateClick = (date: Date) => {
-    if (date < today) return; // 🚫 Prevent selecting past dates
+    if (date < today) return;
 
     if (!tempRange.startDate || (tempRange.startDate && tempRange.endDate)) {
       const newRange = { startDate: date, endDate: undefined };
@@ -66,10 +66,12 @@ export default function DateRangePicker({
       let startDate = start < date ? start : date;
       let endDate = start < date ? date : start;
 
-      const diffDays = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24));
+      const diffDays = Math.ceil(
+        (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)
+      );
 
       if (diffDays < minRangeDays || diffDays > maxRangeDays) {
-        alert(`Select between ${minRangeDays} and ${maxRangeDays} days.`);
+        toast(`Select between ${minRangeDays} and ${maxRangeDays} days.`);
         return;
       }
 
@@ -99,7 +101,10 @@ export default function DateRangePicker({
     const dates = generateCalendar(month, year);
 
     return (
-      <div className="w-64 p-2" aria-label={`Calendar for ${month + 1}/${year}`}>
+      <div
+        className="w-64 p-2"
+        aria-label={`Calendar for ${month + 1}/${year}`}
+      >
         <div className="flex justify-between items-center mb-2">
           <button
             onClick={() => setCurrentMonth(new Date(year, month - 1, 1))}
@@ -129,7 +134,9 @@ export default function DateRangePicker({
               new Date(2023, 9, i + 1)
             )
           ).map((day, index) => (
-            <div key={index} className="text-center">{day}</div>
+            <div key={index} className="text-center">
+              {day}
+            </div>
           ))}
         </div>
 
@@ -167,9 +174,9 @@ export default function DateRangePicker({
   const nextYear = startMonth === 11 ? startYear + 1 : startYear;
 
   return (
-   <div className="py-6 border-b border-gray-200 grid gap-5">
-            <h3 className="text-xl font-medium mb-2">Select Check-in date</h3>
-      <div className="flex items-center justify-between mb-3">
+    <div className="py-6 border-b border-gray-200 grid gap-5">
+      <h3 className="text-xl font-medium mb-2">Select Check-in date</h3>
+      <div className="flex items-center justify-between">
         <div className="text-sm text-gray-700">
           {value?.startDate && value?.endDate
             ? `${formatDate(value.startDate)} → ${formatDate(value.endDate)}`
@@ -187,7 +194,7 @@ export default function DateRangePicker({
         )}
       </div>
 
-      <div className="flex gap-2">
+      <div className="md:flex gap-2">
         {renderCalendar(startMonth, startYear)}
         {renderCalendar(nextMonth, nextYear)}
       </div>

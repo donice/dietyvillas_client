@@ -141,9 +141,9 @@ export default function DateRangePicker({
               <button
                 key={index}
                 onClick={() => handleDateClick(date)}
-                className={`rounded p-1 focus:outline focus:ring-2 focus:ring-blue-400 ${
+                className={`rounded p-1 focus:outline focus:ring-2 focus:ring-amber-400 ${
                   isSelected(date)
-                    ? "bg-blue-500 text-white"
+                    ? "bg-amber-500 text-white"
                     : "hover:bg-gray-200"
                 }`}
                 aria-pressed={isSelected(date)}
@@ -168,7 +168,7 @@ export default function DateRangePicker({
     <div className="relative inline-block" ref={ref}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="border rounded px-3 py-2 min-w-[240px] text-left"
+        className=" rounded min-w-[240px] text-left"
         aria-haspopup="dialog"
         aria-expanded={isOpen}
       >

@@ -8,6 +8,8 @@ import ImageGallery from "./ImageGallery";
 import { useSearchParams } from "next/navigation";
 import Host from "./Host";
 import CheckinDate from "./CheckinDate";
+import PriceCalculator from "./PriceCalculator";
+import Location from "./Location";
 // import Reviews from "./Reviews";
 
 const Skeleton = ({ className }: { className?: string }) => (
@@ -42,24 +44,30 @@ const DynamicPropertyDetailsModule = () => {
   // }
 
   return (
-    <div className="px-4 py-10 mx-auto max-w-7xl">
+    <div className="px-4 pt-10 pb-40 mx-auto max-w-7xl">
       <ImageGallery
         data={dynamicPropertyInfo}
         images={dynamicPropertyInfo?.property_images || []}
       />
-      <Host data={dynamicPropertyInfo} />
-      <section className="max-w-2xl">
-        <Description data={dynamicPropertyInfo} />
-        <Amenities data={dynamicPropertyInfo} />
-      </section>
+      <div className="grid md:grid-cols-2 gap-20">
+        <section className="max-w-2xl">
+          {" "}
+          <Host data={dynamicPropertyInfo} />
+          <Description data={dynamicPropertyInfo} />
+          <Amenities data={dynamicPropertyInfo} />{" "}
+          <CheckinDate
+            value={dateRange}
+            onChange={setDateRange}
+            minRangeDays={2}
+            maxRangeDays={30}
+            locale="en-US"
+          />
+        </section>
 
-      <CheckinDate
-        value={dateRange}
-        onChange={setDateRange}
-        minRangeDays={2}
-        maxRangeDays={30}
-        locale="en-US"
-      />
+        <PriceCalculator />
+      </div>
+      <Location/>
+
       {/*<Reviews /> */}
     </div>
   );
