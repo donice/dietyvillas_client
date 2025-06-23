@@ -2,61 +2,92 @@
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { BsArrowLeftCircleFill } from "react-icons/bs";
+import clsx from "clsx"; // Optional for cleaner class toggling. Remove if not used.
+
+const tabs = [
+  { key: "title", label: "Title" },
+  { key: "propertyType", label: "Property Type" },
+  { key: "photoTour", label: "Photo Tour" },
+  { key: "guests", label: "Number of Guests" },
+  { key: "description", label: "Description" },
+  { key: "amenities", label: "Amenities" },
+  { key: "location", label: "Location" },
+  { key: "houseRules", label: "House Rules" },
+  { key: "guestSafety", label: "Guest Safety" },
+];
 
 const AddListingModule = () => {
   const router = useRouter();
-  const [openedTab, setopenedTab] = useState("title")
+  const [openedTab, setOpenedTab] = useState<string | null>("title");
+
+  const renderTabContent = () => {
+    switch (openedTab) {
+      case "title":
+        return <div className="p-4 border rounded-xl"> {/* Example content */}
+          <h2 className="text-xl font-semibold mb-2">Add a Title</h2>
+          <input type="text" placeholder="Beautiful beachfront apartment" className="w-full p-2 border rounded" />
+        </div>;
+
+      case "propertyType":
+        return <div className="p-4 border rounded-xl">Choose a property type (House, Apartment, Guest House...)</div>;
+
+      case "photoTour":
+        return <div className="p-4 border rounded-xl">Upload Photos of Your Property</div>;
+
+      case "guests":
+        return <div className="p-4 border rounded-xl">Specify the number of guests allowed</div>;
+
+      case "description":
+        return <div className="p-4 border rounded-xl">Write a detailed description of your property</div>;
+
+      case "amenities":
+        return <div className="p-4 border rounded-xl">Select available amenities</div>;
+
+      case "location":
+        return <div className="p-4 border rounded-xl">Enter the property location</div>;
+
+      case "houseRules":
+        return <div className="p-4 border rounded-xl">Set house rules for guests</div>;
+
+      case "guestSafety":
+        return <div className="p-4 border rounded-xl">Add guest safety information</div>;
+
+      default:
+        return <div className="flex justify-center items-center h-full text-gray-400">Select a tab to modify</div>;
+    }
+  };
+
   return (
     <div className="grid grid-cols-3 gap-10">
-      <section className="grid gap-3">
-        <div className="flex items-center gap-2 mb-4">
-          <BsArrowLeftCircleFill className="text-2xl text-gray-300" />
-          <span className="font-semibold"> Add Listing</span>
-        </div>
+      {/* Sidebar */}
+      <aside className="grid gap-3 transition-all duration-200">
+        <button
+          onClick={() => router.back()}
+          className="flex items-center gap-2 mb-4 text-gray-500 hover:text-black"
+        >
+          <BsArrowLeftCircleFill className="text-2xl" />
+          <span className="font-semibold">Back</span>
+        </button>
 
-        <div className="border border-gray-300 p-4 rounded-xl">
-          <h3 className="text-sm">Title</h3>
-          <div>-</div>
-        </div>
-        <div className="border border-gray-300 p-4 rounded-xl">
-          <h3 className="text-sm">Property Type</h3>
-          <div>-</div>
-        </div>
-        <div className="border border-gray-300 p-4 rounded-xl">
-          <h3 className="text-sm">Photo tour</h3>
-          <div>-</div>
-        </div>
-        <div className="border border-gray-300 p-4 rounded-xl">
-          <h3 className="text-sm">Number of guests</h3>
-          <div>-</div>
-        </div>
-        <div className="border border-gray-300 p-4 rounded-xl">
-          <h3 className="text-sm">Description</h3>
-          <div>-</div>
-        </div>
-        <div className="border border-gray-300 p-4 rounded-xl">
-          <h3 className="text-sm">Amenities</h3>
-          <div>-</div>
-        </div>
-        <div className="border border-gray-300 p-4 rounded-xl">
-          <h3 className="text-sm">Location</h3>
-          <div>-</div>
-        </div>
-        <div className="border border-gray-300 p-4 rounded-xl">
-          <h3 className="text-sm">House Rules</h3>
-          <div>-</div>
-        </div>
-        <div className="border border-gray-300 p-4 rounded-xl">
-          <h3 className="text-sm">Guest Safety</h3>
-          <div>-</div>
-        </div>
-      </section>
+        {tabs.map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => setOpenedTab(tab.key)}
+            className={clsx(
+              "border p-4 rounded-xl text-left",
+              openedTab === tab.key
+                ? "border-amber-400 shadow shadow-amber-100 bg-gray-50"
+                : "border-gray-300 hover:border-black"
+            )}
+          >
+            <h3 className="text-sm font-medium">{tab.label}</h3>
+            <span>-</span>
+          </button>
+        ))}
+      </aside>
 
-      <section className="col-span-2">
-{
-  openedTab == null ? <div className="flex justify-center items-center h-full">Select a Tab to modify</div> : null
-}
-      </section>
+      {/* Main Content */}
+      <section className="col-span-2">{renderTabContent()} </section>
     </div>
   );
 };
