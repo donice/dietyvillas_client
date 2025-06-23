@@ -28,7 +28,7 @@ const Listing = ({ data, loading }: ListingProps) => {
   }, []);
 
   if (loading) {
-    return <HeaderSkeleton />;
+    return <HeaderSkeleton row_number={6} />;
   }
 
   const listings = data?.data?.data || [];
