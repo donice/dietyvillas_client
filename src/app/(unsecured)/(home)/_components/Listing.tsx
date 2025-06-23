@@ -44,6 +44,7 @@ const Listing = ({ data, loading }: ListingProps) => {
           return (
             <Link
               key={property.id}
+              target={property?.platform !== "deity-villas" ? "_blank" : "_self"}
               href={
                 property?.platform == "deity-villas"
                   ? "/properties/view?url=" + property.url

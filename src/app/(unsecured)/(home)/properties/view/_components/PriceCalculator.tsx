@@ -27,11 +27,13 @@ const PriceCalculator = ({ data }: any) => {
   const [propertyUrl, setPropertyUrl] = useState(0)
   const [range, setRange] = useState<{ startDate?: Date; endDate?: Date }>({});
   const [guests, setGuests] = useState<any>({
-    adults: 0,
+    adults: Number(data?.no_of_guest),
     children: 0,
     infants: 0,
     pets: 0,
   });
+
+  console.log("guests", data?.no_of_guest)
 
   const bookMutation = useMutation({
     mutationKey: ["bookMutation"],
@@ -109,7 +111,7 @@ const PriceCalculator = ({ data }: any) => {
             </div>
           </div>
           <div className="p-4 grid">
-            <span>Check-in</span>
+            <span>Guests</span>
             <GuestSelector value={guests} onChange={setGuests} />
           </div>
         </div>{" "}

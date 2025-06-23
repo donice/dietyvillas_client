@@ -114,7 +114,6 @@ const ProfileMenu = () => {
     refetchOnWindowFocus: false,
   });
 
-    console.log("accountData", accountData)
 
   const [open, setOpen] = useState(false);
   const profileImage = accountData?.data[0]?.profile_image || "";
@@ -138,7 +137,6 @@ const ProfileMenu = () => {
         </div>
       </div>
 
-      {/* Dropdown */}
       {open && (
         <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg transition z-50">
           <Link

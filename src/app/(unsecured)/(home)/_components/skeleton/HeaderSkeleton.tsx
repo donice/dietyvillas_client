@@ -10,7 +10,7 @@ export const SkeletonLoader = () => (
           key={index}
           className={` ${isFirst ? "rounded-tl-3xl" : ""}
             ${isLast ? "rounded-tr-3xl" : ""}
-            px-6 py-2 bg-gray-300 dark:bg-gray-300 animate-pulse w-24 h-8
+            px-6 py-2 bg-gray-300 animate-pulse w-24 h-8
 
           `}
         ></div>

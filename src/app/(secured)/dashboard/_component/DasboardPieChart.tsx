@@ -32,10 +32,10 @@ export default class Example extends PureComponent {
                 const { cx, cy } = viewBox;
                 return (
                   <>
-                    <text x={cx} y={cy - 10} textAnchor="middle" className='text-sm text-gray-400'>
+                    <text x={cx} y={cy - 10} textAnchor="middle" className='text-sm text-gray-600'>
                       February
                     </text>
-                    <text x={cx} y={cy + 10} textAnchor="middle" className='text-sm text-gray-400'>
+                    <text x={cx} y={cy + 10} textAnchor="middle" className='text-sm text-gray-600'>
                       2025
                     </text>
                   </>
