@@ -6,6 +6,8 @@ import Logo from "@/../public/logo.svg";
 import Link from "next/link";
 import { TbMenu2 } from "react-icons/tb";
 import { GrFormClose } from "react-icons/gr";
+import { useQuery } from "@tanstack/react-query";
+import axiosInstance from "@/lib/axiosInstance";
 
 const HomeNav = () => {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -18,6 +20,16 @@ const HomeNav = () => {
     dialogRef.current?.close();
   };
 
+  const {data: accountData} = useQuery({
+    queryKey: ["accountData"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/user/account")
+      return res?.data
+    }
+  })
+
+  console.log("accountData", accountData)
+
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white text-sm">
       <div className="flex items-center justify-between px-4 py-3 md:px-8 w-full max-w-7xl mx-auto">
@@ -29,6 +41,8 @@ const HomeNav = () => {
           <Link href={"/"} className="px-4 py-2 font-medium hover:text-amber-500 transition">
             Switch to Hosting
           </Link>
+
+
           <Link
             href={"/signin"}
             className="px-6 py-2 rounded-full bg-white border-2 border-amber-400 text-amber-400 font-semibold hover:bg-amber-100 transition"

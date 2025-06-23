@@ -29,6 +29,7 @@ const DashboardNav: React.FC = () => {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+
   return (
     <nav className="fixed top-0 w-full bg-white text-gray-900 z-50 border-b border-gray-200">
       <div className="px-4 py-4 w-full max-w-7xl mx-auto">
@@ -104,7 +105,7 @@ const DashboardNav: React.FC = () => {
 export default DashboardNav;
 
 const ProfileMenu = () => {
-  const { data, isLoading } = useQuery({
+  const { data: accountData, isLoading } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
       const { data } = await axiosInstance.get(API_ROUTES.PROFILE.GET_PROFILE);
@@ -113,8 +114,10 @@ const ProfileMenu = () => {
     refetchOnWindowFocus: false,
   });
 
+    console.log("accountData", accountData)
+
   const [open, setOpen] = useState(false);
-  const profileImage = data?.data[0]?.profile_image;
+  const profileImage = accountData?.data[0]?.profile_image || "";
 
   return (
     <div className="relative">

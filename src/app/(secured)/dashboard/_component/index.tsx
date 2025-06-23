@@ -5,8 +5,20 @@ import { SlArrowRight } from "react-icons/sl";
 import DasboardLineGraph from "./DasboardLineGraph";
 import DasboardPieChart from "./DasboardPieChart";
 import { CustomHeader, CustomSubHeader } from "@/components/common/header/Header";
+import axiosInstance from "@/lib/axiosInstance";
+import { useQuery } from "@tanstack/react-query";
 
 const DashboardModule = () => {
+
+  const {data: userDashboard} = useQuery({
+    queryKey: ["userDashboard"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/user/dashboard")
+      return res?.data
+    }
+  })
+
+  console.log("userDashboard", userDashboard)
 
   return (
     <section className="p-2 lg:px-4 flex flex-col gap-4 dark:text-[#D7DFEF]">
